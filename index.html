@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#79c3ea" />
+  <title>Ninja Adventure: Naruto &amp; Sasuke</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./src/ui/styles.css" />
+</head>
+<body>
+  <div id="game-root">
+    <canvas id="game" width="960" height="540"></canvas>
+
+    <!-- HUD dalam permainan -->
+    <div id="hud" aria-live="polite">
+      <div class="hud-left">
+        <div id="hud-hearts" class="hearts"></div>
+        <div class="hud-chips">
+          <span class="chip" id="hud-level">Lv 1</span>
+          <span class="chip coin-chip"><i class="coin-dot"></i><b id="hud-coins">0/0</b></span>
+          <span class="chip star-chip"><b id="hud-score">0</b></span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <span class="chip char-chip-wrap"><span id="hud-char" class="ch-chip naruto">N</span>
+          <span id="hud-ability" class="ability-ring"></span>
+        </span>
+        <button id="btn-pause" class="btn-pause" aria-label="Jeda (Esc)">⏸</button>
+      </div>
+    </div>
+
+    <!-- Kontrol layar sentuh -->
+    <div id="touch-controls">
+      <div class="tc-left">
+        <button class="tc-btn" data-btn="left" aria-label="Berjalan ke kiri">◀</button>
+        <button class="tc-btn" data-btn="right" aria-label="Berjalan ke kanan">▶</button>
+      </div>
+      <div class="tc-right">
+        <button class="tc-btn tc-special" data-btn="special" aria-label="Jurus khusus (J)">JURUS</button>
+        <button class="tc-btn tc-jump" data-btn="jump" aria-label="Lompat">LOMPAT</button>
+      </div>
+    </div>
+
+    <!-- Scrim jeda -->
+    <div id="pause-scrim"></div>
+
+    <!-- Layar-layar -->
+    <section id="screen-menu" class="screen panel-center">
+      <div class="menu-card">
+        <h1 class="game-title">Ninja Adventure</h1>
+        <p class="game-sub">Naruto &amp; Sasuke</p>
+        <p class="game-tag">Petualangan platform ninja yang ceria!</p>
+        <div class="menu-actions">
+          <button id="btn-play" class="btn big primary">▶ Mulai Bermain</button>
+          <button id="btn-levels" class="btn">Pilih Level</button>
+          <div class="menu-row">
+            <button id="btn-help-menu" class="btn">Cara Bermain</button>
+            <button id="btn-settings" class="btn">Pengaturan</button>
+          </div>
+          <button id="btn-credits" class="btn small ghost">Kredit</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-char" class="screen panel-center">
+      <div class="menu-card wide">
+        <h2 class="screen-title">Pilih Ninjamu</h2>
+        <div class="char-row">
+          <div class="char-card" id="char-card-naruto">
+            <div class="mini-canvas" id="prev-naruto"></div>
+            <h3 class="c-naruto">Naruto Uzumaki</h3>
+            <p>Pintar lari cepat, ceria, dan penuh semangat.</p>
+            <div class="ability-tag on">Jurus Bayangan Dupleks</div>
+            <button id="char-pick-naruto" class="btn small">Pilih</button>
+          </div>
+          <div class="char-card" id="char-card-sasuke">
+            <div class="mini-canvas" id="prev-sasuke"></div>
+            <h3 class="c-sasuke">Sasuke Uchiha</h3>
+            <p>Tenang, presisi, dan pandai melesat cepat.</p>
+            <div class="ability-tag on">Kilat Petir Ungu</div>
+            <button id="char-pick-sasuke" class="btn small">Pilih</button>
+          </div>
+        </div>
+        <div class="menu-row center gap-top">
+          <button id="char-back" class="btn small ghost">← Kembali</button>
+          <button id="char-start" class="btn primary">Mulai Petualangan ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-levels" class="screen panel-center">
+      <div class="menu-card wide">
+        <h2 class="screen-title">Pilih Level</h2>
+        <div class="lv-row">
+          <div class="lv-card" id="lv-card-0">
+            <div class="lv-thumb thumb-1"><span class="lv-num">1</span><div class="lv-name">Desa Konoha yang Ceria</div></div>
+            <div class="lv-lock" id="lv-lock-0">🔒</div>
+            <div class="lv-best" id="best-0">Belum dimainkan</div>
+          </div>
+          <div class="lv-card" id="lv-card-1">
+            <div class="lv-thumb thumb-2"><span class="lv-num">2</span><div class="lv-name">Hutan Bambu</div></div>
+            <div class="lv-lock" id="lv-lock-1">🔒</div>
+            <div class="lv-best" id="best-1">Belum dimainkan</div>
+          </div>
+          <div class="lv-card" id="lv-card-2">
+            <div class="lv-thumb thumb-3"><span class="lv-num">3</span><div class="lv-name">Lembah Petir</div></div>
+            <div class="lv-lock" id="lv-lock-2">🔒</div>
+            <div class="lv-best" id="best-2">Belum dimainkan</div>
+          </div>
+        </div>
+        <div class="menu-row center gap-top">
+          <button id="levels-back" class="btn small ghost">← Kembali</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-settings" class="screen panel-center">
+      <div class="menu-card">
+        <h2 class="screen-title">Pengaturan</h2>
+        <label class="set-row"><span>Efek Suara</span><input type="checkbox" id="set-sfx" /></label>
+        <label class="set-row"><span>Musik</span><input type="checkbox" id="set-music" /></label>
+        <label class="set-row"><span>Kekuatan Suara</span><input type="range" id="set-vol" min="0" max="100" step="5" /></label>
+        <label class="set-row"><span>Kurangi Efek Kilau &amp; Guncangan</span><input type="checkbox" id="set-reducefx" /></label>
+        <div class="set-row radios">
+          <span>Tombol Sentuh</span>
+          <div class="radio-group">
+            <label><input type="radio" name="touchmode" value="auto" />Otomatis</label>
+            <label><input type="radio" name="touchmode" value="on" />Selalu Tampil</label>
+            <label><input type="radio" name="touchmode" value="off" />Sembunyikan</label>
+          </div>
+        </div>
+        <div class="menu-row gap-top">
+          <button id="btn-reset" class="btn small danger">Hapus Semua Progres</button>
+          <button id="settings-close" class="btn primary">Selesai</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-credits" class="screen panel-center">
+      <div class="menu-card">
+        <h2 class="screen-title">Kredit</h2>
+        <p class="credits-text">
+          <b>Ninja Adventure: Naruto &amp; Sasuke</b> — karya penggemar (fan game) yang dibuat untuk senang bermain,
+          gratis dan tanpa iklan.<br /><br />
+          Seluruh gambar dibuat dengan kode (pixel art prosedural), suara disintesis dengan WebAudio, dan musik
+          diggenerasi seketika — tidak ada aset berhak cipta yang dipakai.<br /><br />
+          Naruto Uzumaki &amp; Sasuke Uchiha adalah milik
+          Masashi Kishimoto / Shueisha. Ini bukan produk resmi dan tidak berafiliasi.
+        </p>
+        <div class="menu-row center gap-top">
+          <button id="credits-close" class="btn primary">Kembali</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-help" class="screen panel-center">
+      <div class="menu-card">
+        <h2 class="screen-title">Cara Bermain</h2>
+        <div class="help-cols" id="help-cols-desktop"></div>
+        <div class="help-cols" id="help-cols-mobile"></div>
+        <p class="help-tip">Saklar lompat: tekan sekejap untuk lompat pendek — tahan lebih lama untuk melesat lebih tinggi!</p>
+        <div class="menu-row center gap-top">
+          <button id="help-close" class="btn primary">Mengerti!</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-pause" class="screen panel-center">
+      <div class="menu-card pause">
+        <h2 class="screen-title">Jeda</h2>
+        <div class="menu-actions">
+          <button id="btn-resume" class="btn big primary">▶ Lanjutkan</button>
+          <button id="btn-restart" class="btn">Ulangi Level</button>
+        </div>
+        <div class="menu-row">
+          <p class="swap-label">Ganti karakter (posisi tetap):</p>
+        </div>
+        <div class="menu-row">
+          <button id="btn-swap-naruto" class="btn small c-naruto">Naruto</button>
+          <button id="btn-swap-sasuke" class="btn small c-sasuke">Sasuke</button>
+        </div>
+        <div class="menu-row">
+          <button id="btn-help" class="btn small">Kontrol</button>
+          <button id="btn-p-settings" class="btn small">Pengaturan</button>
+        </div>
+        <button id="btn-pmenu" class="btn small ghost">↩ Menu Utama</button>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen panel-center dark">
+      <div class="menu-card result">
+        <h2 class="screen-title" id="res-title">Babak Selesai!</h2>
+        <p class="res-sub" id="res-sub"></p>
+        <div class="res-newbest" id="res-newbest"></div>
+        <div id="res-stats" class="res-stats"></div>
+        <div class="menu-row center gap-top">
+          <button id="btn-retry" class="btn">Main Lagi</button>
+          <button id="btn-next" class="btn primary">Level Berikutnya ▶</button>
+        </div>
+        <div class="menu-row center">
+          <button id="btn-res-menu" class="btn small ghost">↩ Menu Utama</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast"></div>
+
+    <!-- layar pembuka -->
+    <div id="boot"><div class="boot-inner"><span class="boot-dot"></span>Menyiapkan ninja…</div></div>
+    <div id="boot-error" style="display:none"></div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

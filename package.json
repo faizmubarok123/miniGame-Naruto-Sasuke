@@ -1,0 +1,20 @@
+{
+  "name": "ninja-adventure-naruto-sasuke",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Platformer 2D kasual - Naruto & Sasuke chibi",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "playwright": "^1.64.1",
+    "vite": "^6.0.0"
+  }
+}

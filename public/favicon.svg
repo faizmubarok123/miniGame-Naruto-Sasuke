@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <rect width="48" height="48" rx="10" fill="#8ed7ff"/>
+  <!-- torii sederhana -->
+  <rect x="10" y="30" width="6" height="14" fill="#a33f36"/>
+  <rect x="32" y="30" width="6" height="14" fill="#a33f36"/>
+  <rect x="6" y="24" width="36" height="6" fill="#d95040"/>
+  <rect x="12" y="16" width="24" height="4" fill="#d95040"/>
+  <!-- matahari -->
+  <circle cx="36" cy="10" r="4" fill="#ffd23e"/>
+</svg>
